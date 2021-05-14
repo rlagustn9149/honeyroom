@@ -13,20 +13,20 @@ class LineChartWidget extends StatefulWidget {
 }
 
 class _LineChartWidget extends State<LineChartWidget> {
-  List<User> _users;
+  List<Read> _users;
   bool _loading;
 
   @override
-  void initState() {
-    super.initState();
-    _loading = true;
-    ReadData.readData().then((users) {
-      setState(() {
-        _users = users;
-        _loading = false;
-      });
-    });
-  }
+  // void initState() {
+  //   super.initState();
+  //   _loading = true;
+  //   ReadData.readData().then((users) {
+  //     setState(() {
+  //       _users = users;
+  //       _loading = false;
+  //     });
+  //   });
+  // }
 
   final List<Color> gradientColors = [
     const Color(0xff23b6e6),
@@ -42,9 +42,20 @@ class _LineChartWidget extends State<LineChartWidget> {
             color: Colors.white,
             child: LineChart(
               LineChartData(
-                  gridData: FlGridData(show: true, horizontalInterval: 2),
+                  // rangeAnnotations: RangeAnnotations(verticalRangeAnnotations: [
+                  //   VerticalRangeAnnotation(x1: 0, x2: 5),
+                  // ]),
+                  // lineTouchData: LineTouchData(
+                  //     touchTooltipData: LineTouchTooltipData(
+                  //         fitInsideHorizontally: true,
+                  //         fitInsideVertically: true)),
+                  gridData: FlGridData(
+                    show: true,
+                    horizontalInterval: 50000,
+                    drawVerticalLine: true,
+                  ),
                   minX: 0,
-                  maxX: 11,
+                  maxX: 10,
                   minY: 0,
                   maxY: 300000,
                   titlesData: LineTitles.getTitleData(),

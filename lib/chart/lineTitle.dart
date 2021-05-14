@@ -4,6 +4,19 @@ import 'package:flutter/material.dart';
 class LineTitles {
   static getTitleData() => FlTitlesData(
         show: true,
+        topTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 22,
+            // 무슨아파트인지 아파트 명을 title로 보여주기 미구현
+            getTitles: (value) {
+              return '';
+            }),
+        rightTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 22,
+            getTitles: (value) {
+              return '';
+            }),
         bottomTitles: SideTitles(
           showTitles: true,
           reservedSize: 22,
@@ -40,6 +53,12 @@ class LineTitles {
                 return '10억';
               case 150000:
                 return '15억';
+              case 200000:
+                return '20억';
+              case 250000:
+                return '25억';
+              case 300000:
+                return '30억';
             }
             return '';
           },
