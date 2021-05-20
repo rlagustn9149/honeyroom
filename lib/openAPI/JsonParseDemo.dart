@@ -18,7 +18,7 @@ class _JsonParseDemoState extends State<JsonParseDemo> {
 
   //firebase 읽을 때
   List _users;
-  List filterusers;
+  List filterusers = [];
   List<Read> parsinguser;
   List<Read> filterParsinguser;
   bool _loading;
@@ -71,27 +71,27 @@ class _JsonParseDemoState extends State<JsonParseDemo> {
   //     });
   //   });
   // }
-  // api 호출2 (for문 이용)
-  // void initState() {
-  //   super.initState();
-  //   _loading = true;
-  //   Services2.getUsers();
-  // }
-
-  // firebase 데이터 읽는 부분
-  // @override
+  //api 호출2 (for문 이용)
   void initState() {
     super.initState();
     _loading = true;
-    ReadData.readData(building, type, city).then((users) {
-      setState(() {
-        _users = users;
-        parsinguser = usersFromFirebase(_users);
-        _loading = false;
-        filter();
-      });
-    });
+    Services2.getUsers();
   }
+
+  // firebase 데이터 읽는 부분
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _loading = true;
+  //   ReadData.readData(building, type, city).then((users) {
+  //     setState(() {
+  //       _users = users;
+  //       parsinguser = usersFromFirebase(_users);
+  //       _loading = false;
+  //       filter();
+  //     });
+  //   });
+  // }
 
   void filter() {
     filterusers = ReadData.filter(
@@ -170,8 +170,8 @@ class _JsonParseDemoState extends State<JsonParseDemo> {
               //     user.guranteedAmount,
               //     user.monthlyRent);
               return ListTile(
-                title: Text("지역:${user.address}"),
-                subtitle: Text("주차:${user.parking}, 애완견:${user.pet}, 월세:"),
+                title: Text("지역:{user.address}"),
+                subtitle: Text("주차:{user.parking}, 애완견:{user.pet}, 월세:"),
               );
             }),
       ),

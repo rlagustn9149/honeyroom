@@ -1,8 +1,58 @@
+List<ApartRent> apartRentFromJson(var data) {
+  return List<ApartRent>.from(data.map((x) => ApartRent.fromJson(x)));
+}
+
+// 아파트 전월세
+class ApartRent {
+  ApartRent({
+    this.constructionYear,
+    this.year,
+    this.address,
+    this.apartment,
+    this.month,
+    this.date,
+    this.squareMeasure,
+    this.number,
+    this.code,
+    this.floor,
+    this.guranteedAmount,
+    this.monthlyRent,
+  });
+
+  String constructionYear;
+  String year;
+  String address;
+  String apartment;
+  String month;
+  String date;
+  String squareMeasure;
+  String number;
+  String code;
+  String floor;
+  String guranteedAmount;
+  String monthlyRent;
+
+  factory ApartRent.fromJson(Map<String, dynamic> json) => ApartRent(
+        constructionYear: json["건축년도"],
+        year: json["년"],
+        address: json["법정동"],
+        apartment: json['아파트'],
+        month: json['월'],
+        date: json["일"],
+        squareMeasure: json["전용면적"],
+        number: json['지번'],
+        code: json['지역코드'],
+        floor: json['층'],
+        guranteedAmount: json['보증금액'],
+        monthlyRent: json['월세금액'],
+      );
+}
+
 List<ApartBuy> apartBuyFromJson(var data) {
   return List<ApartBuy>.from(data.map((x) => ApartBuy.fromJson(x)));
 }
 
-// API 파싱
+// 아파트 매매
 class ApartBuy {
   ApartBuy(
       {this.transactionAmount,
@@ -54,7 +104,7 @@ List<MonthlyRent> monthlyRentFromJson(var data) {
   return List<MonthlyRent>.from(data.map((x) => MonthlyRent.fromJson(x)));
 }
 
-// API 파싱
+// 다가구 전월세
 class MonthlyRent {
   MonthlyRent({
     this.constructionYear,
