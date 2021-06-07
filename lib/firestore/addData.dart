@@ -102,6 +102,8 @@ void addRentData(
     '복층': multipleLayer,
     '방개수': rooms,
     '화장실개수': bathroom,
+    '이미지': '',
+    '구': landcodeToSeoul[code]
   });
 }
 
@@ -259,122 +261,4 @@ addAprtbuyData(
     '이미지': '',
     '구': landcodeToSeoul[code]
   });
-}
-
-// firebase의 데이터를 읽어오는 부분
-/* 
-  building : 아파트, 다가구, 오피스텔
-  type : 매매, 전세, 월세
-  city : 시
-*/
-
-List check(bool filter) {
-  if (filter = true)
-    return [true];
-  else
-    return [true, false];
-}
-
-// String transactionAmount,
-// String constructionYear,
-// String year,
-// String address,
-// String apartment,
-// String month,
-// String date,
-// String squareMeasure,
-// String number,
-// String code,
-// String floor,
-// String guranteedAmount,
-// String monthlyRent,
-// bool parking,
-// bool pet,
-// bool elevator,
-// bool cctv,
-// bool doorSecurity,
-// bool guard,
-// bool intercom,
-// bool airConditioner,
-// bool refrigerator,
-// bool bed,
-// bool washer,
-// bool dishwasher,
-// bool dryer,
-// bool closet,
-// bool shoeRack,
-// bool microwave,
-// bool multipleLayer,
-// int rooms,
-// int bathroom
-
-class ReadData {
-  static Future readData(String building, String type, String city) async {
-    List _users = [];
-    String _transactionAmount;
-    String _constructionYear;
-    String _year;
-    String _address;
-    String _apartment;
-    String _month;
-    String _date;
-    String _squareMeasure;
-    String _number;
-    String _code;
-    String _floor;
-    String guranteedAmount;
-    String monthlyRent;
-
-    // List _parking = check(parking);
-    // List _pet = check(pet);
-    // List _elevator = check(elevator);
-    // List _cctv = check(cctv);
-    // List _doorSecurity = check(doorSecurity);
-    // List _guard = check(guard);
-    // List _intercom = check(intercom);
-    // List _airConditioner = check(airConditioner);
-    // List _refrigerator = check(refrigerator);
-    // List _bed = check(bed);
-    // List _washer = check(washer);
-    // List _dishwasher = check(dishwasher);
-    // List _dryer = check(dryer);
-    // List _closet = check(closet);
-    // List _shoeRack = check(shoeRack);
-    // List _microwave = check(microwave);
-    // List _multipleLayer = check(multipleLayer);
-    // int _rooms = rooms;
-    // int _bathroom = bathroom;
-
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection(building)
-        .doc(type)
-        .collection(city)
-        //.where("주차", whereIn: _parking)
-        //.where("반려견", whereIn: [false, true])
-        // .where("엘리베이터", whereIn: _elevator)
-        // .where("CCTV", whereIn: _cctv)
-        // .where("현관보안", whereIn: _doorSecurity)
-        // .where("경비원", whereIn: _guard)
-        // .where("인터폰", whereIn: _intercom)
-        // .where("에어컨", whereIn: _airConditioner)
-        // .where("냉장고", whereIn: _refrigerator)
-        // .where("침대", whereIn: _bed)
-        // .where("세탁기", whereIn: _washer)
-        // .where("식기세척기", whereIn: _dishwasher)
-        // .where("건조기", whereIn: _dryer)
-        // .where("옷장", whereIn: _closet)
-        // .where("신발장", whereIn: _shoeRack)
-        // .where("전자레인지", whereIn: _microwave)
-        // .where("복층", whereIn: _multipleLayer)
-        // .where("방개수", isGreaterThanOrEqualTo: _rooms)
-        // .where("화장실개수", isGreaterThanOrEqualTo: _bathroom)
-        .get();
-
-    for (int i = 0; i < querySnapshot.size; i++) {
-      _users.add(querySnapshot.docs[i].data());
-    }
-    print(_users.length);
-    final List<Read> users = usersFromFirebase(_users);
-    return users;
-  }
 }

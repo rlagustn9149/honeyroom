@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'Services.dart';
 import 'Users.dart';
-//import 'package:honeyroom/firestore/adminData.dart';
-import 'package:honeyroom/firestore/test.dart';
+//import 'package:honeyroom/firestore/addData.dart';
+import 'package:honeyroom/firestore/readData.dart';
 
 class JsonParseDemo extends StatefulWidget {
   JsonParseDemo() : super();
@@ -29,7 +29,7 @@ class _JsonParseDemoState extends State<JsonParseDemo> {
   String transactionAmount;
   String constructionYear;
   String year;
-  String address;
+  String address = '강남구';
   String apartment;
   String month;
   String date;
@@ -59,39 +59,28 @@ class _JsonParseDemoState extends State<JsonParseDemo> {
   int rooms = 1;
   int bathroom = 1;
 
-  //@override
-  //api 호출 부분
+  @override
+  //api 호출 (for문 이용)
   // void initState() {
   //   super.initState();
   //   _loading = true;
-  //   Services.getUsers().then((users) {
-  //     setState(() {
-  //       _users = users;
-  //       _loading = false;
-  //     });
-  //   });
+  //   Services.getUsers();
   // }
-  //api 호출2 (for문 이용)
+
+  // firebase 데이터 읽는 부분
+  @override
   void initState() {
     super.initState();
     _loading = true;
-    Services2.getUsers();
+    ReadData.readData(building, type, city).then((users) {
+      setState(() {
+        _users = users;
+        parsinguser = usersFromFirebase(_users);
+        _loading = false;
+        //filter();
+      });
+    });
   }
-
-  // firebase 데이터 읽는 부분
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _loading = true;
-  //   ReadData.readData(building, type, city).then((users) {
-  //     setState(() {
-  //       _users = users;
-  //       parsinguser = usersFromFirebase(_users);
-  //       _loading = false;
-  //       filter();
-  //     });
-  //   });
-  // }
 
   void filter() {
     filterusers = ReadData.filter(
@@ -140,38 +129,12 @@ class _JsonParseDemoState extends State<JsonParseDemo> {
       body: Container(
         color: Colors.white,
         child: ListView.builder(
-            itemCount: null == filterParsinguser ? 0 : filterParsinguser.length,
+            itemCount: null == parsinguser ? 0 : parsinguser.length,
             itemBuilder: (context, index) {
-              Read user = filterParsinguser[index];
-              //MonthlyRent user = _users[index];
-              //ApartBuy user = _users[index];
-              //데이터를 firebase에 추가하는 부분
-              // addAprtbuyData(
-              //     user.transactionAmount,
-              //     user.constructionYear,
-              //     user.year,
-              //     user.address,
-              //     user.apartment,
-              //     user.month,
-              //     user.date,
-              //     user.squareMeasure,
-              //     user.number,
-              //     user.code,
-              //     user.floor);
-              //전월세 데이터 추가
-              // addRentData(
-              //     user.constructionYear,
-              //     user.year,
-              //     user.address,
-              //     user.month,
-              //     user.date,
-              //     user.squareMeasure,
-              //     user.code,
-              //     user.guranteedAmount,
-              //     user.monthlyRent);
+              Read user = parsinguser[index];
               return ListTile(
-                title: Text("지역:{user.address}"),
-                subtitle: Text("주차:{user.parking}, 애완견:{user.pet}, 월세:"),
+                title: Text("지역:{$user.address}"),
+                subtitle: Text("주차:{$user.parking}, 애완견:{$user.pet}, 월세:"),
               );
             }),
       ),

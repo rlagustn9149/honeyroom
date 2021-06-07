@@ -1,6 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:honeyroom/openAPI/Users.dart';
 
+// firebase의 데이터를 읽어오는 부분
+/* 
+  building : 아파트, 다가구, 오피스텔
+  type : 매매, 전세, 월세
+  city : 시
+*/
 class ReadData {
   static Future readData(
     String building,
@@ -21,6 +26,7 @@ class ReadData {
     return _users;
   }
 
+  //filter
   static filter(
       List user,
       String transactionAmount,

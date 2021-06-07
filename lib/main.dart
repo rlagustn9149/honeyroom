@@ -1,13 +1,30 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:honeyroom/map/appbar_menu/appbar.dart';
+import 'package:honeyroom/map/map/map_big.dart';
+import 'package:honeyroom/map/map/map_pick.dart';
+import 'package:honeyroom/map/map_screen.dart';
+import 'package:honeyroom/map/test.dart';
+import 'package:honeyroom/map/testing.dart';
+import 'package:flutter/material.dart';
+
+import 'package:honeyroom/map/map/map_tmap.dart';
+import 'package:honeyroom/map/map/map_auto.dart';
+import 'package:honeyroom/map/map/map_important_location.dart';
+import 'package:honeyroom/map/map/map_view.dart';
+import 'package:honeyroom/map/map/map_location_auto.dart';
+import 'package:honeyroom/map/map_support/picked_locations_provider.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:honeyroom/map/map_screen.dart';
 import 'package:honeyroom/openAPI/JsonParseDemo.dart';
-import 'package:honeyroom/chart/chart.dart';
+import 'package:honeyroom/pages/hexagon.dart';
+
+//import 'login/transition_route_observer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(HomeApp());
+  runApp(MyApp());
 }
 
 class HomeApp extends StatelessWidget {
@@ -20,95 +37,90 @@ class HomeApp extends StatelessWidget {
   }
 }
 
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:honeyroom/openAPI/JsonParseDemo.dart';
-// import 'package:honeyroom/filter/villa.dart';
-// import 'package:honeyroom/filter/apartment.dart';
-// import 'package:honeyroom/filter/officetel.dart';
-// import 'package:honeyroom/filter/information.dart';
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: MyHomePage(),
+      //navigatorObservers: [TransitionRouteObserver()],
+    );
+  }
+}
 
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp();
-//   runApp(HomeApp());
-// }
 
-// class HomeApp extends StatelessWidget {
+// class MyApp extends StatelessWidget {
+//   // This widget is the root of your application.
 //   @override
 //   Widget build(BuildContext context) {
 //     return MaterialApp(
+//       title: '꿀방',
 //       theme: ThemeData(
-//         primaryColor: Colors.yellow[600],
+//         backgroundColor: Colors.yellow[50],
+//         // brightness: Brightness.dark,
+//         primarySwatch: Colors.yellow,
+//         accentColor: Colors.orange,
+//         textSelectionTheme: TextSelectionThemeData(cursorColor: Colors.white),
+//         // fontFamily: 'SourceSansPro',
+//         iconTheme: IconThemeData(color: Colors.brown),
+//         textTheme: TextTheme(
+//           button: TextStyle(
+//             fontFamily: 'OpenSans',
+//             color: Colors.black,
+//           ),
+//           caption: TextStyle(
+//             fontFamily: 'NotoSans',
+//             fontSize: 12.0,
+//             fontWeight: FontWeight.normal,
+//             color: Colors.grey,
+//           ),
+//           headline1: TextStyle(
+//             fontFamily: 'Quicksand',
+//             color: Colors.black,
+//           ),
+//           headline2: TextStyle(
+//             fontFamily: 'Quicksand',
+//             color: Colors.black,
+//           ),
+//           headline3: TextStyle(
+//             fontFamily: 'OpenSans',
+//             fontSize: 45.0,
+//             //fontWeight: FontWeight.w400,
+//             color: Colors.black,
+//           ),
+//           headline4: TextStyle(
+//             fontFamily: 'Quicksand',
+//             color: Colors.black,
+//           ),
+//           headline5: TextStyle(
+//             fontFamily: 'NotoSans',
+//             color: Colors.black,
+//           ),
+//           headline6: TextStyle(fontFamily: 'NotoSans', color: Colors.black),
+//           bodyText1: TextStyle(
+//             fontFamily: 'NotoSans',
+//             color: Colors.black,
+//           ),
+//           bodyText2: TextStyle(
+//             fontFamily: 'NotoSans',
+//             color: Colors.black,
+//           ),
+//           subtitle1: TextStyle(
+//             fontFamily: 'NotoSans',
+//             color: Colors.black,
+//           ),
+//           subtitle2: TextStyle(
+//             fontFamily: 'NotoSans',
+//             color: Colors.black,
+//           ),
+//           overline: TextStyle(
+//             fontFamily: 'NotoSans',
+//             color: Colors.black,
+//           ),
+//         ),
 //       ),
-//       home: HoneyRoomPage(),
-//     );
-//   }
-// }
-
-// class HoneyRoomPage extends StatefulWidget {
-//   HoneyRoomPage({Key key, this.title}) : super(key: key);
-//   final String title;
-//   @override
-//   _HoneyRoomPageState createState() => _HoneyRoomPageState();
-// }
-
-// class _HoneyRoomPageState extends State<HoneyRoomPage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         centerTitle: true,
-//         title: Text("메뉴"),
-//         elevation: 0.0,
-//         leading: IconButton(
-//             icon: Image.asset('assets/images/RoomGo.png'),
-//             tooltip: '메뉴',
-//             onPressed: () {}),
-//         actions: <Widget>[
-//           IconButton(
-//               icon: Icon(Icons.person), tooltip: '사용자 정보', onPressed: () {})
-//         ],
-//       ),
-//       body: Column(children: <Widget>[
-//         ElevatedButton(
-//           child: Text('빌라', style: TextStyle(fontSize: 24)),
-//           onPressed: () {
-//             Navigator.push(
-//                 context, CupertinoPageRoute(builder: (context) => VillaPage()));
-//           },
-//         ),
-//         ElevatedButton(
-//           child: Text('오피스텔', style: TextStyle(fontSize: 24)),
-//           onPressed: () {
-//             Navigator.push(context,
-//                 CupertinoPageRoute(builder: (context) => OfficePage()));
-//           },
-//         ),
-//         ElevatedButton(
-//           child: Text('아파트', style: TextStyle(fontSize: 24)),
-//           onPressed: () {
-//             Navigator.push(
-//                 context, CupertinoPageRoute(builder: (context) => ApartPage()));
-//           },
-//         ),
-//         ElevatedButton(
-//           child: Text('상세정보', style: TextStyle(fontSize: 24)),
-//           onPressed: () {
-//             Navigator.push(
-//                 context, CupertinoPageRoute(builder: (context) => InfoPage()));
-//           },
-//         ),
-//         ElevatedButton(
-//           child: Text('jsonDemo', style: TextStyle(fontSize: 24)),
-//           onPressed: () {
-//             Navigator.push(context,
-//                 CupertinoPageRoute(builder: (context) => JsonParseDemo()));
-//           },
-//         ),
-//       ]),
+//       home: MyHomePage(),
+//       //navigatorObservers: [TransitionRouteObserver()],
 //     );
 //   }
 // }
