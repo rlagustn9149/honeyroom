@@ -160,6 +160,7 @@ class Read {
     this.floor,
     this.guranteedAmount,
     this.monthlyRent,
+    this.gu,
     this.parking,
     this.pet,
     this.elevator,
@@ -196,6 +197,7 @@ class Read {
   String floor;
   String guranteedAmount;
   String monthlyRent;
+  String gu;
   bool parking;
   bool pet;
   bool elevator;
@@ -232,6 +234,7 @@ class Read {
         floor: json['층'],
         guranteedAmount: json['보증금액'],
         monthlyRent: json['월세금액'],
+        gu: json['구'],
         parking: json['주차'],
         pet: json['반려견'],
         elevator: json['엘리베이터'],

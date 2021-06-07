@@ -42,6 +42,7 @@ class ReadData {
       String floor,
       String guranteedAmount,
       String monthlyRent,
+      List<String> gu,
       bool parking,
       bool pet,
       bool elevator,
@@ -62,6 +63,13 @@ class ReadData {
       int rooms,
       int bathroom) {
     var _user = user
+        .where((element) => gu != ""
+            ? element['구'] == gu[0] ||
+                element['구'] == gu[1] ||
+                element['구'] == gu[2] ||
+                element['구'] == gu[3] ||
+                element['구'] == gu[4]
+            : true)
         .where((element) => pet == true ? element['반려견'] == true : true)
         .where((element) => parking == true ? element['주차'] == true : true)
         .where((element) => elevator == true ? element['엘리베이터'] == true : true)

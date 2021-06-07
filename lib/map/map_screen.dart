@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:fluster/fluster.dart';
@@ -7,6 +9,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:honeyroom/filter/infoExam.dart';
+import 'package:honeyroom/firestore/readData.dart';
+import 'package:honeyroom/openAPI/Users.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import 'constants/constants.dart';
@@ -60,6 +65,11 @@ class _MainState extends State<Main> {
   /// 클러스터 manager
   Fluster<MapMarker> _clusterManager;
 
+  List _users;
+  List filterusers = [];
+  List<Read> parsinguser;
+  List<Read> filterParsinguser;
+
   String building = "아파트";
   String type = "월세";
   String city = "서울";
@@ -76,8 +86,10 @@ class _MainState extends State<Main> {
   String floor;
   String guranteedAmount;
   String monthlyRent;
-  bool parking = true;
-  bool pet = true;
+  List<String> gu = ["강남구", "서초구", "송파구", "광진구", "성동구"];
+  //String gu = '강남구';
+  bool parking = false;
+  bool pet = false;
   bool elevator = false;
   bool cctv = false;
   bool doorSecurity = false;
@@ -93,13 +105,18 @@ class _MainState extends State<Main> {
   bool shoeRack = false;
   bool microwave = false;
   bool multipleLayer = false;
-  int rooms = 1;
-  int bathroom = 1;
+  int rooms = 0;
+  int bathroom = 0;
 
   /// 사용자 위치 표시 하기
   Future<Position> locateUser() async {
     return Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
+  }
+
+  List<int> random() {
+    String list = (Random().nextInt(15) + 1).toString();
+    return list.codeUnits;
   }
 
   getUserLocation() async {
@@ -114,19 +131,19 @@ class _MainState extends State<Main> {
 
   /// 먀커 커스터마이즈
   void setCustomMarker(addr) async {
-    markerIcon = await getBytesFromCanvas(300, 100, addr);
+    markerIcon = await getBytesFromCanvas(100, 100, addr);
   }
 
   /// 마커 처음 찍어주는 부분
   void _setMyLocation(latitude, longtitude, Addr) {
     var _latitude = latitude;
     var _longtitude = longtitude;
-    setCustomMarker(Addr);
-    setState(() async {
+    //setCustomMarker(Addr);
+    setState(() {
       _markers.add(Marker(
         markerId: MarkerId('myInitialPostion'),
         position: LatLng(_latitude, _longtitude),
-        icon: BitmapDescriptor.fromBytes(markerIcon),
+        //icon: BitmapDescriptor.fromBytes(markerIcon),
         onTap: () {},
         infoWindow: InfoWindow(
           title: '나의 위치',
@@ -141,6 +158,52 @@ class _MainState extends State<Main> {
     // TODO: implement initState
     super.initState();
     getUserLocation();
+    ReadData.readData(building, type, city).then((users) {
+      setState(() {
+        _users = users;
+        parsinguser = usersFromFirebase(_users);
+        filter();
+      });
+    });
+  }
+
+  void filter() {
+    filterusers = ReadData.filter(
+        _users,
+        transactionAmount,
+        constructionYear,
+        year,
+        address,
+        apartment,
+        month,
+        date,
+        squareMeasure,
+        number,
+        code,
+        floor,
+        guranteedAmount,
+        monthlyRent,
+        gu,
+        parking,
+        pet,
+        elevator,
+        cctv,
+        doorSecurity,
+        guard,
+        intercom,
+        airConditioner,
+        refrigerator,
+        bed,
+        washer,
+        dishwasher,
+        dryer,
+        closet,
+        shoeRack,
+        microwave,
+        multipleLayer,
+        rooms,
+        bathroom);
+    filterParsinguser = usersFromFirebase(filterusers);
   }
 
   /// 구글 지도 컨트롤러 받아오고, 지도 로딩 & 마커 초기화
@@ -282,7 +345,11 @@ class _MainState extends State<Main> {
                     ),
                     FloatingActionButton.extended(
                       onPressed: () {
-                        stateStterPointSearch();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => (InfoExamPage())),
+                        );
                       },
                       label: Text('주변 아파트',
                           style: TextStyle(
@@ -339,36 +406,36 @@ class _MainState extends State<Main> {
     final response = await http.get(Uri.parse(url));
     final List<MapMarker> markers = [];
 
+    // _setLocation(parsinguser);
+
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
 
       if (data['status'] == 'OK') {
         GoogleMapController controller = await _controller.future;
         controller.animateCamera(CameraUpdate.newLatLngZoom(_center, 16));
-
         setState(() {
-          final foundPlaces = data['results'];
-
-          for (int i = 0; i < foundPlaces.length; i++) {
-            setCustomMarker(foundPlaces[i]['name']);
+          for (int i = 0; i < filterParsinguser.length; i++) {
+            setCustomMarker(filterParsinguser[i].apartment);
+            print(filterParsinguser.length);
+            print(filterParsinguser[i].gu);
             _markers.add(
               Marker(
-                  markerId: MarkerId(foundPlaces[i]['place_id']),
-                  position: LatLng(
-                    foundPlaces[i]['geometry']['location']['lat'],
-                    foundPlaces[i]['geometry']['location']['lng'],
-                  ),
-                  icon: BitmapDescriptor.fromBytes(markerIcon),
-                  infoWindow: InfoWindow(
-                    title: foundPlaces[i]['name'],
-                    snippet: foundPlaces[i]['vicinity'],
-                  ),
-                  onTap: () {}),
+                markerId: MarkerId(filterParsinguser[i].apartment),
+                position:
+                    LatLng(filterParsinguser[i].lat, filterParsinguser[i].lng),
+                //icon: BitmapDescriptor.fromBytes(markerIcon),
+                onTap: () {},
+                infoWindow: InfoWindow(
+                  title: filterParsinguser[i].apartment,
+                  snippet:
+                      "월세/${filterParsinguser[i].guranteedAmount}/${filterParsinguser[i].monthlyRent}",
+                ),
+              ),
             );
           }
-
-          loading = false;
         });
+        loading = false;
       }
     } else {
       print('Fail to fetch place data');

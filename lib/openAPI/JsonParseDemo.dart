@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Services.dart';
 import 'Users.dart';
-//import 'package:honeyroom/firestore/addData.dart';
+import 'package:honeyroom/firestore/addData.dart';
 import 'package:honeyroom/firestore/readData.dart';
 
 class JsonParseDemo extends StatefulWidget {
@@ -29,7 +29,7 @@ class _JsonParseDemoState extends State<JsonParseDemo> {
   String transactionAmount;
   String constructionYear;
   String year;
-  String address = '강남구';
+  String address;
   String apartment;
   String month;
   String date;
@@ -39,6 +39,8 @@ class _JsonParseDemoState extends State<JsonParseDemo> {
   String floor;
   String guranteedAmount;
   String monthlyRent;
+  List<String> gu;
+  //String gu;
   bool parking = true;
   bool pet = true;
   bool elevator = false;
@@ -98,6 +100,7 @@ class _JsonParseDemoState extends State<JsonParseDemo> {
         floor,
         guranteedAmount,
         monthlyRent,
+        gu,
         parking,
         pet,
         elevator,

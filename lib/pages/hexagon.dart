@@ -10,36 +10,6 @@ import 'package:honeyroom/pages/screen/menu3.dart';
 import 'package:honeyroom/pages/screen/menu4.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-int x = 10;
-List apart = [
-  '스톤엘리시온',
-  '강남역이스턴 1동',
-  '더블루 1동',
-  '요진와이시티미니 1동',
-  '금호어울림 101동',
-  '강남역우정에쉐르 1동',
-  '노블스위트 101동',
-  '스톤엘리시온역삼 1동',
-  '강남역이스턴 1동',
-  '스톤엘리시온 1동',
-  '삼성힐스테이트 2단지 206동',
-  '신현대 126동'
-];
-List sub = [
-  '월세 1000/90, 36평, 방세개',
-  '월세 4500/60, 32평, 방세개',
-  '월세 6000/100, 38평, 방세개',
-  '월세 4500/70, 28평, 방두개',
-  '월세 9000/120, 43평, 방네개',
-  '월세 11000/60, 33평, 방세개',
-  '월세 15000/100, 43평, 방네개',
-  '월세 6000/100, 38평, 방세개',
-  '월세 6000/120, 23평, 방두개',
-  '월세 9000/100, 38평, 방세개',
-  '월세 22000/120, 48평, 방세개',
-  '월세 5000/380, 48평, 방세개',
-];
-
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
